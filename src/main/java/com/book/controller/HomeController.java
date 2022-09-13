@@ -1,5 +1,10 @@
 package com.book.controller;
 
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,9 +17,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.book.model.Book;
 import com.book.service.IBooksService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import com.thoughtworks.xstream.io.path.Path;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
@@ -29,13 +40,28 @@ public class HomeController {
 	public String greetings() {
 		return "Hello Book world!";
 	}
-	
+	String UPLOADED_FOLDER= "C:\\abhishek";
 	@PostMapping("/savebook")
-	Integer saveBook(@RequestBody Book booki)
-	{
-		Integer id = bookservice.saveBook2(booki);
-		return id;
+	Integer saveBook(@RequestParam("bookstring") String book, @RequestParam("image")MultipartFile file) throws JsonMappingException,JsonProcessingException{
+		
+		if(file.isEmpty()) {
+			
+		}
+		try {
+			byte[] bytes = file.getBytes();
+			java.nio.file.Path path= Paths.get(UPLOADED_FOLDER);
+			Files.write(path, bytes);
+			
+		}
+		catch(IOException e) {
+			e.printStackTrace();
+		}
+		Book bookobj= new ObjectMapper().readValue(book,Book.class);
+		bookobj.setLogo(file.getOriginalFilename());
+		System.out.println(UPLOADED_FOLDER+"abhishek");
+		return bookservice.saveBook2(bookobj);
 	}
+	
 	@GetMapping("/books") 
 	public List<Book> getAllBooks(){
 		return bookservice.getAllBooks();
@@ -52,12 +78,15 @@ public class HomeController {
 			return bookservice.getAllBooksByAuthorId(id);	
 		}
 	
-	@GetMapping("/search")
-	public List<Book> searchBooks(@RequestParam("category") String category,
-			@RequestParam("authorName") String authorName, 
-			@RequestParam("price") Double price){
-		return bookservice.searcBooks(category,authorName,price);
-	}
+		/*
+		 * @GetMapping("/search") public List<Book>
+		 * searchBooks(@RequestParam("category") String category,
+		 * 
+		 * @RequestParam("authorName") String authorName,
+		 * 
+		 * @RequestParam("price") Double price){ return
+		 * bookservice.searcBooks(category,authorName,price); }
+		 */
 	@GetMapping("/books/category/{category}")
 	public List<Book> searchBooks(@RequestParam("category") String category){
 		return bookservice.searcBooksbyCategory(category);

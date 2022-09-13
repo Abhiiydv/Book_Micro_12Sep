@@ -1,5 +1,6 @@
 package com.book.model;
 
+import java.io.File;
 import java.util.Date;
 
 import javax.persistence.Entity;
