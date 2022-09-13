@@ -22,7 +22,7 @@ public class Book {
 	private String publisher;
 	private Date publishedDate;
 	private String content;
-	private String Active;
+	private boolean Active;
 	public Integer getBookId() {
 		return bookId;
 	}
@@ -83,14 +83,14 @@ public class Book {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public String getActive() {
+	public boolean getActive() {
 		return Active;
 	}
-	public void setActive(String active) {
+	public void setActive(boolean active) {
 		Active = active;
 	}
 	public Book(Integer bookId, Integer authorId, String logo, String title, String category, Double price,
-			String authorname, String publisher,  String content, String active) {
+			String authorname, String publisher,  String content, boolean active) {
 		super();
 		this.bookId = bookId;
 		this.authorId = authorId;

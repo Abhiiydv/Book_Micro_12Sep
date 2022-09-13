@@ -62,8 +62,8 @@ public class BookServiceImpl implements IBooksService{
 	@Override
 	public List<Book> searcBooksbyAuthorname(String authorName) {
 		// TODO Auto-generated method stub
-		List<Book> lis = booksRepository.findAll();
-		return lis.stream().filter(a->a.getAuthorname().equalsIgnoreCase(authorName)).collect(Collectors.toList());
+		List<Book> listt = booksRepository.findAll();
+		return listt.stream().filter(a->a.getAuthorname().equalsIgnoreCase(authorName)).collect(Collectors.toList());
 		
 	}
 
